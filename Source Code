@@ -1,1 +1,145 @@
-#include<iostrean>
+// Abdul Hannan Shazli 
+
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+// Donor class to store information about donors
+
+class Donor {
+private:
+    string name;
+    string bloodType;
+    string contact;
+
+public:
+    Donor(string n, string bt, string c) : name(n), bloodType(bt), contact(c) {}
+
+    string getBloodType() const {
+        return bloodType;
+    }
+
+    void display() const {
+        cout << "Donor Name: " << name << ", Blood Type: " << bloodType << ", Contact: " << contact << endl;
+    }
+};
+
+// Recipient class to store information about recipients
+class Recipient {
+private:
+    string name;
+    string neededBloodType;
+    string contact;
+
+public:
+    Recipient(string n, string bt, string c) : name(n), neededBloodType(bt), contact(c) {}
+
+    string getNeededBloodType() const {
+        return neededBloodType;
+    }
+
+    void display() const {
+        cout << "Recipient Name: " << name << ", Needed Blood Type: " << neededBloodType << ", Contact: " << contact << endl;
+    }
+};
+
+// BloodManagementSystem class to handle donor and recipient records
+class BloodManagementSystem {
+private:
+    vector<Donor> donors;
+    vector<Recipient> recipients;
+
+public:
+    // Add a new donor
+    void addDonor(const Donor& donor) {
+        donors.push_back(donor);
+    }
+
+    // Add a new recipient
+    void addRecipient(const Recipient& recipient) {
+        recipients.push_back(recipient);
+    }
+
+    // Display all donors
+    void displayDonors() const {
+        cout << "\n--- List of Donors ---" << endl;
+        for (const auto& donor : donors) {
+            donor.display();
+        }
+    }
+
+    // Display all recipients
+    void displayRecipients() const {
+        cout << "\n--- List of Recipients ---" << endl;
+        for (const auto& recipient : recipients) {
+            recipient.display();
+        }
+    }
+
+    // Find compatible donors for a recipient based on blood type
+    void findCompatibleDonors(const string& recipientBloodType) const {
+        cout << "\n--- Compatible Donors for Blood Type " << recipientBloodType << " ---" << endl;
+        for (const auto& donor : donors) {
+            if (isCompatible(donor.getBloodType(), recipientBloodType)) {
+                donor.display();
+            }
+        }
+    }
+
+    // Blood type compatibility logic
+    bool isCompatible(const string& donorType, const string& recipientType) const {
+        if (recipientType == "AB+") return true; // Universal recipient
+        if (donorType == "O-" && recipientType != "") return true; // Universal donor
+        if (donorType == recipientType) return true;
+        return false;
+    }
+};
+
+// Main function to interact with the system
+int main() {
+    BloodManagementSystem system;
+
+    // Sample data
+    system.addDonor(Donor("Alice", "A+", "123-456-7890"));
+    system.addDonor(Donor("Bob", "O-", "987-654-3210"));
+    system.addRecipient(Recipient("Charlie", "A+", "555-555-5555"));
+
+    int choice;
+    do {
+        cout << "\n--- Blood Management System Menu ---\n";
+        cout << "1. Add Donor\n";
+        cout << "2. Add Recipient\n";
+        cout << "3. Display Donors\n";
+        cout << "4. Display Recipients\n";
+        cout << "5. Find Compatible Donors\n";
+        cout << "0. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            string name, bloodType, contact;
+            cout << "Enter Donor Name: "; cin >> name;
+            cout << "Enter Donor Blood Type: "; cin >> bloodType;
+            cout << "Enter Donor Contact: "; cin >> contact;
+            system.addDonor(Donor(name, bloodType, contact));
+        } else if (choice == 2) {
+            string name, neededBloodType, contact;
+            cout << "Enter Recipient Name: "; cin >> name;
+            cout << "Enter Needed Blood Type: "; cin >> neededBloodType;
+            cout << "Enter Recipient Contact: "; cin >> contact;
+            system.addRecipient(Recipient(name, neededBloodType, contact));
+        } else if (choice == 3) {
+            system.displayDonors();
+        } else if (choice == 4) {
+            system.displayRecipients();
+        } else if (choice == 5) {
+            string bloodType;
+            cout << "Enter Recipient's Needed Blood Type: "; cin >> bloodType;
+            system.findCompatibleDonors(bloodType);
+        }
+    } while (choice != 0);
+
+    cout << "Exiting Blood Management System..." << endl;
+    return 0;
+}
