@@ -1,4 +1,4 @@
-# Blood-Management-System
+# Blood-Management-System in C++
 A C++ Blood Management System project is designed to manage blood donor and recipient data. It allows users to insert, store, and retrieve information about donors, recipients, and blood types. 
 This C++ Blood Management System project is designed using Object-Oriented Programming (OOP) principles to manage blood donors and recipients efficiently. The system allows users to:
 
